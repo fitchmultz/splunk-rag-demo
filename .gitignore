@@ -1,0 +1,24 @@
+# Environment
+.env
+*.env
+
+# Data
+data/pdfs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Cache
+**/*cache*
+**/*.cache*
+
+# OS
+.DS_Store
+DEMO.md

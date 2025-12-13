@@ -1,0 +1,20 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: splunkbot-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-splunkbot}
+      POSTGRES_USER: ${POSTGRES_USER:-splunkbot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-splunkbot}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-splunkbot} -d ${POSTGRES_DB:-splunkbot}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
