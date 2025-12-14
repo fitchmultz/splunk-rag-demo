@@ -249,6 +249,9 @@ for message in st.session_state.messages:
 
 # Chat input
 if prompt := st.chat_input("Ask about Splunk..."):
+    # Track if this is a new conversation (for sidebar refresh)
+    is_new_conversation = st.session_state.conversation_id is None
+
     # Add user message
     st.session_state.messages.append({"role": "user", "content": prompt})
 
@@ -268,6 +271,9 @@ if prompt := st.chat_input("Ask about Splunk..."):
             if isinstance(result, RAGResponse):
                 # No results found - show the response directly
                 st.markdown(result.answer)
+                # Update conversation_id if it was created
+                if result.conversation_id:
+                    st.session_state.conversation_id = result.conversation_id
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
@@ -276,6 +282,9 @@ if prompt := st.chat_input("Ask about Splunk..."):
                         "thinking": result.thinking,
                     }
                 )
+                # Refresh sidebar if this was a new conversation
+                if is_new_conversation:
+                    st.rerun()
             elif isinstance(result, RAGStreamContext):
                 thinking_text = ""
                 response_text = ""
@@ -330,6 +339,10 @@ if prompt := st.chat_input("Ask about Splunk..."):
                         "thinking": thinking,
                     }
                 )
+
+                # Refresh sidebar if this was a new conversation
+                if is_new_conversation:
+                    st.rerun()
 
         except Exception as e:
             st.error(f"Error: {e}")

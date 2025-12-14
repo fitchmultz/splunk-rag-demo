@@ -19,6 +19,7 @@ class RAGResponse:
     answer: str
     sources: list[dict]  # [{filename, page_number, chunk_id, score}]
     thinking: str | None = None  # Optional thinking/reasoning content
+    conversation_id: int | None = None  # Set when conversation was created/used
 
 
 async def rag_query(
@@ -276,7 +277,9 @@ async def rag_query_prepare(
         await _save_message(pool, conversation_id, "user", query, None)
         await _save_message(pool, conversation_id, "assistant", NO_CONTEXT_RESPONSE, None)
         await _update_conversation(pool, conversation_id)
-        return RAGResponse(answer=NO_CONTEXT_RESPONSE, sources=[])
+        return RAGResponse(
+            answer=NO_CONTEXT_RESPONSE, sources=[], conversation_id=conversation_id
+        )
 
     # Format context for LLM
     context = format_results_for_context(results)
