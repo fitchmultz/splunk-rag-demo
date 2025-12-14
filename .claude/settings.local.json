@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/mitchfultz/Projects/AI/splunk-rag-demo log --oneline -10)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:jkatz05.com)",
+      "WebFetch(domain:www.paradedb.com)",
+      "Bash(ollama list:*)",
+      "Bash(docker:*)",
+      "WebFetch(domain:docs.ollama.com)"
+    ]
+  }
+}
